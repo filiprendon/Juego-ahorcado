@@ -1,0 +1,19 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pixelate');
+body{
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 65vh;
+}
+
+.bienvenida{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 55px;
+    width: 800px;
+    height: 200px;
+}

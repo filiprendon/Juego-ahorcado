@@ -1,0 +1,82 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    background-color: lightblue;
+}
+.container{
+    width: 850px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: flex-end;
+    gap: 50px;
+    padding: 60px 40px;
+    border-radius: 8px;
+}
+.palabra{
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+.palabra .letra{
+    width: 28px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid black;
+    font-size: 40px;
+    font-weight: 500;
+    text-align: center;
+}
+.palabra .letra.adivinada{
+    border-color: transparent;
+    margin: -30px 0 35px;
+}
+
+.game-box{
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.game-box .teclado{
+    display: flex;
+    gap: 4px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.teclado button{
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    padding: 5px;
+    border: none;
+    background-color: black;
+    border-radius: 4px;
+    text-transform: uppercase;
+    width: calc(100% / 9 - 5px);
+}
+.teclado button:hover{
+    background-color: white;
+    color: black;
+}
+
+@media (max-width: 782px){
+    .container{
+        flex-direction: column;
+        padding: 30px 15px;
+        align-items: center;
+    }
+    .ahorcado img{
+        max-width: 300px;
+    }
+    .ahorcado h1{
+        display: none;
+    }
+}
