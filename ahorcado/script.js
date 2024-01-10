@@ -23,6 +23,7 @@ const initGame = (button, letraClicada) => {
             if (letra === letraClicada) {
                 displayPalabra.querySelectorAll("li")[index].innerText = letra;
                 displayPalabra.querySelectorAll("li")[index].classList.add("adivinada");
+                button.style.backgroundColor = "green";
             }
 
         });
@@ -30,6 +31,7 @@ const initGame = (button, letraClicada) => {
     else {
         errores++;
         imgAhorcado.src = `img/${errores}.png`;
+        button.style.backgroundColor = "red";
     }
     button.disabled = true;
     textoErrores.innerText = `${errores} / ${maxErrores}`;
