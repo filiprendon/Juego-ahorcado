@@ -1,7 +1,7 @@
 // Arrays y variables
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
-const textoErrores = document.querySelectorAll(".errores b")[0];
+const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
 
 
@@ -37,7 +37,7 @@ const initGame = (button, letraClicada) => {
     textoErrores.innerText = `${errores} / ${maxErrores}`;
 }
 
-// Creo un botón por cada letra del abecedario y lo imprimo por consola
+// Creo un botón por cada letra del abecedario
 for (let i = 97; i <= 122; i++) {
     const button = document.createElement("button");
     button.innerText = String.fromCharCode(i);
@@ -64,6 +64,10 @@ function iniciarJuego() {
     letrasUsuario = [];
     errores = 0;
 
+}
+
+function juegoGanado(){
+    
 }
 
 
