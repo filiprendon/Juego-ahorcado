@@ -34,6 +34,7 @@ const initGame = (button, letraClicada) => {
         button.style.backgroundColor = "red";
     }
     button.disabled = true;
+    
     textoErrores.innerText = `${errores} / ${maxErrores}`;
 }
 
