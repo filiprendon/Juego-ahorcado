@@ -1,4 +1,7 @@
 // Arrays y variables
+let palabraActual, errores = 0;
+const maxErrores = 6;
+
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
@@ -11,9 +14,6 @@ const palabras = [
     'viajero', 'monte', 'equipaje', 'guia', 'reserva', 'turismo', 'destino', 'travesia', 'adventure', 'descubrir',
     'itinerario', 'naturaleza', 'tradiciones', 'monumento', 'oceano', 'isla', 'exploración', 'fotografia', 'transporte'
 ];
-
-let palabraActual, errores = 0;
-const maxErrores = 6;
 
 
 
@@ -41,8 +41,6 @@ const initGame = (button, letraClicada) => {
     // console.log(palabraActual.length);
     // console.log(verificacion.length);
     verificarErrores();
-
-    
 }
 
 // Creo un botón por cada letra del abecedario
@@ -51,8 +49,6 @@ for (let i = 97; i <= 122; i++) {
     button.innerText = String.fromCharCode(i);
     teclado.appendChild(button);
     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
-    
-    
 }
 seleccionarPalabraRandom();
 
@@ -64,15 +60,13 @@ function seleccionarPalabraRandom() {
     palabraActual = palabraSeleccionada;
     displayPalabra.innerHTML = palabraSeleccionada.split("").map(() => `<li class="letra"></li>`).join("");
     console.log(palabraSeleccionada);
-    
 }
 
 function iniciarJuego() {
     window.location.href = "juegoAhorcado.html";
     seleccionarPalabraRandom();
     letrasUsuario = [];
-    errores = 0;
-
+    errores = 0
 }
 
 function verificarErrores(){
@@ -101,3 +95,44 @@ function popupjuegoPerdido(){
 function volverAJugar(){
     location.reload();
 }
+// function guardarProgreso() {
+//     const estadoJuego = {
+//         palabraActual: palabraActual,
+//         errores: errores,
+//         letrasAdivinadas: Array.from(document.querySelectorAll(".adivinada")).map(el => el.textContent),
+//     };
+//     localStorage.setItem('progresoJuego', JSON.stringify(estadoJuego));
+// }
+// function cargarProgreso() {
+//     const datosGuardados = localStorage.getItem('progresoJuego');
+//     if (datosGuardados) {
+//         const estadoJuego = JSON.parse(datosGuardados);
+//         palabraActual = estadoJuego.palabraActual;
+//         errores = estadoJuego.errores;
+//         reconstruirEstadoJuego(estadoJuego);
+//     } else {
+//         // Iniciar juego normalmente si no hay datos guardados
+//         seleccionarPalabraRandom();
+//     }
+// }
+
+// function reconstruirEstadoJuego(estado) {
+//     displayPalabra.innerHTML = palabraActual.split("").map(letra => 
+//         `<li class="letra ${estado.letrasAdivinadas.includes(letra) ? 'adivinada' : ''}">${estado.letrasAdivinadas.includes(letra) ? letra : ''}</li>`).join("");
+
+//     imgAhorcado.src = `img/${errores}.png`;
+//     textoErrores.innerText = `${errores} / ${maxErrores}`;
+//     const botonesTeclado = teclado.querySelectorAll("button");
+//     botonesTeclado.forEach(button => {
+//         if (estado.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
+//             button.disabled = true;
+//             button.style.backgroundColor = palabraActual.includes(button.textContent) ? "green" : "red";
+//         }
+//     });
+    
+//     verificarErrores();
+//     verificarSolucion();
+// }
+// function borrarProgreso(){
+//     localStorage.removeItem('progresoJuego');
+// }
