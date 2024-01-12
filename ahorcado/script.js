@@ -3,7 +3,7 @@ const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
-
+const verificacion = document.getElementsByClassName("letra adivinada");
 
 
 const palabras = [
@@ -24,6 +24,7 @@ const initGame = (button, letraClicada) => {
                 displayPalabra.querySelectorAll("li")[index].innerText = letra;
                 displayPalabra.querySelectorAll("li")[index].classList.add("adivinada");
                 button.style.backgroundColor = "green";
+                
             }
 
         });
@@ -36,6 +37,12 @@ const initGame = (button, letraClicada) => {
     button.disabled = true;
     
     textoErrores.innerText = `${errores} / ${maxErrores}`;
+    verificarSolucion();
+    // console.log(palabraActual.length);
+    // console.log(verificacion.length);
+    verificarErrores();
+
+    
 }
 
 // Creo un botón por cada letra del abecedario
@@ -44,9 +51,9 @@ for (let i = 97; i <= 122; i++) {
     button.innerText = String.fromCharCode(i);
     teclado.appendChild(button);
     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
-
+    
+    
 }
-
 seleccionarPalabraRandom();
 
 
@@ -57,6 +64,7 @@ function seleccionarPalabraRandom() {
     palabraActual = palabraSeleccionada;
     displayPalabra.innerHTML = palabraSeleccionada.split("").map(() => `<li class="letra"></li>`).join("");
     console.log(palabraSeleccionada);
+    
 }
 
 function iniciarJuego() {
@@ -67,11 +75,29 @@ function iniciarJuego() {
 
 }
 
-function juegoGanado(){
-    
+function verificarErrores(){
+    if (errores == maxErrores){
+        popupjuegoPerdido();
+        console.log("Noob");
+    }
+}
+function verificarSolucion(){
+    if (verificacion.length == palabraActual.length) {
+        popupjuegoGanado();
+    }
 }
 
+function popupjuegoGanado(){
+    document.getElementById('juegoGanado').style.display = "block";
+}
+function cerrarPopup(){
+    document.getElementById('juegoGanado').style.display = "none";
+    document.getElementById('juegoPerdido').style.display = "none";
+}
+function popupjuegoPerdido(){
+    document.getElementById('juegoPerdido').style.display = "block";
+}
 
-function juegoPerdido() {
-    return errores >= maxIntentos;
+function volverAJugar(){
+    location.reload();
 }
