@@ -1,4 +1,3 @@
-
 // Arrays y variables
 let palabraActual, errores = 0;
 const maxErrores = 6;
@@ -116,6 +115,7 @@ function verificarSolucion(){
     }
 }
 
+// Pq no va info
 function popupjuegoGanado(){
     document.getElementById('juegoGanado').style.display = "block";
     document.getElementById('txtGanado').innerHTML="Felicidades, has acertado la palabra";
