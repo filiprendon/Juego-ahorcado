@@ -1,3 +1,4 @@
+
 // Arrays y variables
 let palabraActual, errores = 0;
 const maxErrores = 6;
@@ -7,7 +8,6 @@ const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
 const verificacion = document.getElementsByClassName("letra adivinada");
-
 
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos." },
@@ -44,7 +44,7 @@ const palabrasCategorias = [
 
 
 // Para cookies
-const nombreUsuario = document.getElementById('nombreUsuario');
+
 const btnInicio = document.getElementById('btnInicio');
 
 
@@ -116,16 +116,16 @@ function verificarSolucion(){
     }
 }
 
-function popupjuegoGanado(info){
+function popupjuegoGanado(){
     document.getElementById('juegoGanado').style.display = "block";
     document.getElementById('txtGanado').innerHTML="Felicidades, has acertado la palabra";
-    document.querySelector('.info p').innerHTML= info;
+    document.getElementById('info').innerHTML= info;
 }
 
-function popupjuegoPerdido(info){
+function popupjuegoPerdido(){
     document.getElementById('juegoPerdido').style.display = "block";
     document.getElementById('txtPerdido').innerHTML="Has perdido, la palabra era: " + palabraActual;
-    document.querySelector('.info p').innerHTML= info;
+    document.getElementById('info').innerHTML= info;
 }
 
 function cerrarPopup(){
@@ -142,91 +142,6 @@ function volverAJugar(){
 
 // COOKIES
 // function guardarProgreso(){
-//     const estadoJuego ={
-//         nombreUsuario: nombreUsuario,
-//         palabraActual: palabraActual,
-//         numErrores: errores,
-//         letrasAdivinadas: letraClicada
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function guardarProgreso() {
-//     const estadoJuego = {
-//         palabraActual: palabraActual,
-//         errores: errores,
-//         letrasAdivinadas: Array.from(document.querySelectorAll(".adivinada")).map(el => el.textContent),
-//     };
-//     localStorage.setItem('progresoJuego', JSON.stringify(estadoJuego));
-// }
-// function cargarProgreso() {
-//     const datosGuardados = localStorage.getItem('progresoJuego');
-//     if (datosGuardados) {
-//         const estadoJuego = JSON.parse(datosGuardados);
-//         palabraActual = estadoJuego.palabraActual;
-//         errores = estadoJuego.errores;
-//         reconstruirEstadoJuego(estadoJuego);
-//     } else {
-//         // Iniciar juego normalmente si no hay datos guardados
-//         seleccionarPalabraRandom();
-//     }
-// }
-
-// function reconstruirEstadoJuego(estado) {
-//     displayPalabra.innerHTML = palabraActual.split("").map(letra => 
-//         `<li class="letra ${estado.letrasAdivinadas.includes(letra) ? 'adivinada' : ''}">${estado.letrasAdivinadas.includes(letra) ? letra : ''}</li>`).join("");
-
-//     imgAhorcado.src = `img/${errores}.png`;
-//     textoErrores.innerText = `${errores} / ${maxErrores}`;
-//     const botonesTeclado = teclado.querySelectorAll("button");
-//     botonesTeclado.forEach(button => {
-//         if (estado.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
-//             button.disabled = true;
-//             button.style.backgroundColor = palabraActual.includes(button.textContent) ? "green" : "red";
-//         }
-//     });
+//     localStorage.setItem("nombreUsuario", document.getElementById("nombreUsuario"));
     
-//     verificarErrores();
-//     verificarSolucion();
-// }
-// function borrarProgreso(){
-//     localStorage.removeItem('progresoJuego');
 // }
