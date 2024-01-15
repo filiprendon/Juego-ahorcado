@@ -125,7 +125,7 @@ function popupjuegoGanado(){
 function popupjuegoPerdido(){
     document.getElementById('juegoPerdido').style.display = "block";
     document.getElementById('txtPerdido').innerHTML="Has perdido, la palabra era: " + palabraActual;
-    document.getElementById('info').innerHTML= info;
+    document.getElementById('info2').innerHTML= info;
 }
 
 function cerrarPopup(){
