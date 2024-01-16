@@ -1,12 +1,12 @@
 // Arrays y variables
 let palabraActual, errores = 0;
 const maxErrores = 6;
-
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
 const verificacion = document.getElementsByClassName("letra adivinada");
+
 
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos." },
