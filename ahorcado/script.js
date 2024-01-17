@@ -1,13 +1,11 @@
 // Arrays y variables
-let palabraActual, errores = 0;
+let palabraActual, infoPalabra, errores = 0;
 const maxErrores = 6;
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
 const verificacion = document.getElementsByClassName("letra adivinada");
-
-
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos." },
     { palabra: "playa", categoria: "Transporte y Destinos", info: "Una extensión de arena y agua en la costa." },
@@ -72,6 +70,7 @@ const initGame = (button, letraClicada) => {
     // console.log(palabraActual.length);
     // console.log(verificacion.length);
     verificarErrores();
+    guardarProgreso();
 }
 
 // Creo un botón por cada letra del abecedario
@@ -82,12 +81,13 @@ for (let i = 97; i <= 122; i++) {
     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
 }
 seleccionarPalabraRandom();
-
+guardarProgreso();
 
 // Funciones
 function seleccionarPalabraRandom() {
     const {palabra, categoria, info} = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
     palabraActual = palabra;
+    infoPalabra = info;
     document.querySelector(".categoria b").innerHTML = categoria;
     displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
     
@@ -119,13 +119,13 @@ function verificarSolucion(){
 function popupjuegoGanado(){
     document.getElementById('juegoGanado').style.display = "block";
     document.getElementById('txtGanado').innerHTML="Felicidades, has acertado la palabra";
-    document.getElementById('info').innerHTML= info;
+    document.getElementById('info').innerHTML= infoPalabra;
 }
 
 function popupjuegoPerdido(){
     document.getElementById('juegoPerdido').style.display = "block";
     document.getElementById('txtPerdido').innerHTML="Has perdido, la palabra era: " + palabraActual;
-    document.getElementById('info2').innerHTML= info;
+    document.getElementById('info2').innerHTML= infoPalabra;
 }
 
 function cerrarPopup(){
@@ -142,6 +142,13 @@ function volverAJugar(){
 
 // COOKIES
 // function guardarProgreso(){
-//     localStorage.setItem("nombreUsuario", document.getElementById("nombreUsuario"));
+//     let nombreUsuario = document.getElementById('nombreUsuario');
+//     if (nombreUsuario.trim() !== "") {
+//         localStorage.setItem("nombreUsuario", nombreUsuario);
+//       } else {
+//         alert("Por favor, introduce un nombre de usuario válido.");
+//       }
+//     localStorage.setItem("letrasAdivinadas", letraClicada);
+//     localStorage.setItem("");
     
 // }
