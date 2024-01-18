@@ -37,10 +37,7 @@ const palabrasCategorias = [
     { palabra: "itinerario", categoria: "Equipamiento y Preparativos", info: "Un plan detallado de actividades en un viaje." },
     { palabra: "transporte", categoria: "Equipamiento y Preparativos", info: "Los medios utilizados para moverse de un lugar a otro." }
 ];
-  
 
-
-// Para cookies
 
 const btnInicio = document.getElementById('btnInicio');
 
@@ -53,7 +50,7 @@ const initGame = (button, letraClicada) => {
                 displayPalabra.querySelectorAll("li")[index].innerText = letra;
                 displayPalabra.querySelectorAll("li")[index].classList.add("adivinada");
                 button.style.backgroundColor = "green";
-                
+
             }
 
         });
@@ -85,15 +82,16 @@ guardarProgreso();
 
 // Funciones
 function seleccionarPalabraRandom() {
-    const {palabra, categoria, info} = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
+    const { palabra, categoria, info } = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
     palabraActual = palabra;
     infoPalabra = info;
     document.querySelector(".categoria b").innerHTML = categoria;
     displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
-    
+
     console.log(palabraActual);
     console.log(categoria);
     console.log(info);
+    guardarProgreso();
 }
 
 function iniciarJuego() {
@@ -103,52 +101,114 @@ function iniciarJuego() {
     errores = 0
 }
 
-function verificarErrores(){
-    if (errores == maxErrores){
+function verificarErrores() {
+    if (errores == maxErrores) {
         popupjuegoPerdido();
         console.log("Noob");
     }
 }
-function verificarSolucion(){
+function verificarSolucion() {
     if (verificacion.length == palabraActual.length) {
         popupjuegoGanado();
     }
 }
 
 // Pq no va info
-function popupjuegoGanado(){
+function popupjuegoGanado() {
     document.getElementById('juegoGanado').style.display = "block";
-    document.getElementById('txtGanado').innerHTML="Felicidades, has acertado la palabra";
-    document.getElementById('info').innerHTML= infoPalabra;
+    document.getElementById('txtGanado').innerHTML = "Felicidades, has acertado la palabra";
+    document.getElementById('info').innerHTML = infoPalabra;
 }
 
-function popupjuegoPerdido(){
+function popupjuegoPerdido() {
     document.getElementById('juegoPerdido').style.display = "block";
-    document.getElementById('txtPerdido').innerHTML="Has perdido, la palabra era: " + palabraActual;
-    document.getElementById('info2').innerHTML= infoPalabra;
+    document.getElementById('txtPerdido').innerHTML = "Has perdido, la palabra era: " + palabraActual;
+    document.getElementById('info2').innerHTML = infoPalabra;
 }
 
-function cerrarPopup(){
+function cerrarPopup() {
     document.getElementById('juegoGanado').style.display = "none";
     document.getElementById('juegoPerdido').style.display = "none";
 }
 
 
-function volverAJugar(){
+function volverAJugar() {
     location.reload();
+    borrarProgreso();
+}
+
+
+// localStorage
+function guardarProgreso(){
+    const estadoDelJuego = {
+        nombreUsuario: document.getElementById("nombreUsuario"),
+        palabraActual: palabraActual,
+        // letrasAdivinadas: letraClicada,
+        erroresActuales: errores
+    }
+    localStorage.setItem('progresoJuego', JSON.stringify(estadoDelJuego));
 }
 
 
 
-// COOKIES
-// function guardarProgreso(){
-//     let nombreUsuario = document.getElementById('nombreUsuario');
-//     if (nombreUsuario.trim() !== "") {
-//         localStorage.setItem("nombreUsuario", nombreUsuario);
-//       } else {
-//         alert("Por favor, introduce un nombre de usuario válido.");
-//       }
-//     localStorage.setItem("letrasAdivinadas", letraClicada);
-//     localStorage.setItem("");
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function guardarProgreso() {
+//     const estadoJuego = {
+//         palabraActual: palabraActual,
+//         errores: errores,
+//         letrasAdivinadas: Array.from(document.querySelectorAll(".adivinada")).map(el => el.textContent),
+//     };
+//     localStorage.setItem('progresoJuego', JSON.stringify(estadoJuego));
+// }
+// function cargarProgreso() {
+//     const datosGuardados = localStorage.getItem('progresoJuego');
+//     if (datosGuardados) {
+//         const estadoJuego = JSON.parse(datosGuardados);
+//         palabraActual = estadoJuego.palabraActual;
+//         errores = estadoJuego.errores;
+//         reconstruirEstadoJuego(estadoJuego);
+//     } else {
+//         seleccionarPalabraRandom();
+//     }
+// }
+
+// function borrarProgreso(){
+//     localStorage.removeItem('progresoJuego');
 // }
