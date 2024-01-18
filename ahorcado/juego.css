@@ -4,6 +4,9 @@ body{
     justify-content: center;
     min-height: 70vh;
     background-color: lightblue;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .container{
     width: 850px;

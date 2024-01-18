@@ -19,6 +19,6 @@ body{
     padding: 55px;
     width: 800px;
     height: 200px;
-    background-color: rgba(251,251,253,0.8);
+    background-color: rgba(251,251,253,0.7);
     backdrop-filter: saturate(180%) blur(15px);
 }
