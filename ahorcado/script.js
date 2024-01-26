@@ -1,5 +1,6 @@
+cargarProgreso();
 // Arrays y variables
-let palabraActual, infoPalabra, iamgenPalabra, errores = 0;
+let palabraActual, infoPalabra, imagenPalabra, errores = 0;
 const maxErrores = 6;
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
@@ -10,20 +11,20 @@ const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg"},
     { palabra: "playa", categoria: "Transporte y Destinos", info: "Una extensión de arena y agua en la costa.", img: "img/playa.jpg" },
     { palabra: "monte", categoria: "Transporte y Destinos", info: "Una elevación de terreno más alta que una colina.", img: "img/monte.jpeg" },
-    { palabra: "destino", categoria: "Transporte y Destinos", info: "El lugar al que alguien se dirige o viaja.", img: "img/" },
+    { palabra: "destino", categoria: "Transporte y Destinos", info: "El lugar al que alguien se dirige o viaja.", img: "img/destino" },
     { palabra: "oceano", categoria: "Transporte y Destinos", info: "Una vasta extensión de agua salada.", img: "img/oceano.jpg" },
     { palabra: "isla", categoria: "Transporte y Destinos", info: "Un pedazo de tierra rodeado de agua.", img: "img/isla.jpg" },
     { palabra: "crucero", categoria: "Transporte y Destinos", info: "Un viaje en barco de placer.", img: "img/crucero.png" },
     { palabra: "excursion", categoria: "Actividades y Experiencias", info: "Un viaje breve con propósitos recreativos.", img: "img/excursion.jpg" },
-    { palabra: "explorar", categoria: "Actividades y Experiencias", info: "Descubrir un lugar desconocido.", img: "img/explorar" },
-    { palabra: "cultura", categoria: "Actividades y Experiencias", info: "Las creencias, valores y tradiciones de un grupo de personas.", img: "img/cultura" },
-    { palabra: "aventura", categoria: "Actividades y Experiencias", info: "Una experiencia emocionante y riesgosa.", img: "img/aventura" },
-    { palabra: "viajero", categoria: "Actividades y Experiencias", info: "Una persona que viaja por placer o negocio.", img: "img/viajero" },
-    { palabra: "turismo", categoria: "Actividades y Experiencias", info: "La industria de viajes y recreación.", img: "img/turismo" },
-    { palabra: "travesia", categoria: "Actividades y Experiencias", info: "Un viaje largo y difícil.", img: "img/travesia" },
-    { palabra: "descubrir", categoria: "Actividades y Experiencias", info: "Encontrar algo nuevo o desconocido.", img: "img/descubrir" },
-    { palabra: "naturaleza", categoria: "Actividades y Experiencias", info: "El mundo natural, incluyendo plantas y animales.", img: "img/naturaleza" },
-    { palabra: "tradiciones", categoria: "Actividades y Experiencias", info: "Prácticas culturales transmitidas de generación en generación.", img: "img/tradiciones" },
+    { palabra: "explorar", categoria: "Actividades y Experiencias", info: "Descubrir un lugar desconocido.", img: "img/explorar.jpg" },
+    { palabra: "cultura", categoria: "Actividades y Experiencias", info: "Las creencias, valores y tradiciones de un grupo de personas.", img: "img/magni.png" },
+    { palabra: "aventura", categoria: "Actividades y Experiencias", info: "Una experiencia emocionante y riesgosa.", img: "img/aventura.jpg" },
+    { palabra: "viajero", categoria: "Actividades y Experiencias", info: "Una persona que viaja por placer o negocio.", img: "img/viajero.jpg" },
+    { palabra: "turismo", categoria: "Actividades y Experiencias", info: "La industria de viajes y recreación.", img: "img/turismo.jpg" },
+    { palabra: "travesia", categoria: "Actividades y Experiencias", info: "Un viaje largo y difícil.", img: "img/travesia.jpeg" },
+    { palabra: "descubrir", categoria: "Actividades y Experiencias", info: "Encontrar algo nuevo o desconocido.", img: "img/descubrir.jpg" },
+    { palabra: "naturaleza", categoria: "Actividades y Experiencias", info: "El mundo natural, incluyendo plantas y animales.", img: "img/naturaleza.jpg" },
+    { palabra: "tradiciones", categoria: "Actividades y Experiencias", info: "Prácticas culturales transmitidas de generación en generación.", img: "img/tradiciones.jpg" },
     { palabra: "monumento", categoria: "Actividades y Experiencias", info: "Una estructura con valor histórico o cultural.", img: "img/monumento.jpg" },
     { palabra: "exploracion", categoria: "Actividades y Experiencias", info: "La acción de investigar o descubrir territorios desconocidos.", img: "img/exploracion.jpg" },
     { palabra: "fotografia", categoria: "Actividades y Experiencias", info: "El arte de capturar imágenes con una cámara.", img: "img/fotografia.jpg" },
@@ -34,7 +35,7 @@ const palabrasCategorias = [
     { palabra: "equipaje", categoria: "Equipamiento y Preparativos", info: "Las pertenencias que llevas contigo en un viaje.", img: "img/equipaje.jpg" },
     { palabra: "guia", categoria: "Equipamiento y Preparativos", info: "Un libro o persona que proporciona información sobre un lugar.", img: "img/guia.jpeg" },
     { palabra: "reserva", categoria: "Equipamiento y Preparativos", info: "Hacer una reserva para asegurar un servicio o alojamiento.", img: "img/reserva.jpg" },
-    { palabra: "itinerario", categoria: "Equipamiento y Preparativos", info: "Un plan detallado de actividades en un viaje.", img: "img/itinerario" },
+    { palabra: "itinerario", categoria: "Equipamiento y Preparativos", info: "Un plan detallado de actividades en un viaje.", img: "img/iti.jpg" },
     { palabra: "transporte", categoria: "Equipamiento y Preparativos", info: "Los medios utilizados para moverse de un lugar a otro.", img: "img/transporte.jpg" }
 ];
 
@@ -85,14 +86,14 @@ function seleccionarPalabraRandom() {
     const { palabra, categoria, info, img } = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
     palabraActual = palabra;
     infoPalabra = info;
-    iamgenPalabra = img;
+    imagenPalabra = img;
     document.querySelector(".categoria b").innerHTML = categoria;
     displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
 
     console.log(palabraActual);
     console.log(categoria);
     console.log(infoPalabra);
-    console.log(iamgenPalabra);
+    console.log(imagenPalabra);
     guardarProgreso();
 }
 
@@ -101,7 +102,7 @@ function iniciarJuego() {
     seleccionarPalabraRandom();
     letrasUsuario = [];
     errores = 0;
-    cargarProgreso();
+    // cargarProgreso();
 }
 
 function verificarErrores() {
@@ -120,7 +121,7 @@ function popupjuegoGanado() {
     document.getElementById('juegoGanado').style.display = "block";
     document.querySelector('.card-title').innerHTML = palabraActual;
     document.querySelector('.card-text').innerHTML = infoPalabra;
-    document.querySelector('.img-fluid').src = iamgenPalabra;
+    document.querySelector('.img-fluid').src = imagenPalabra;
     // document.getElementById('txtGanado').innerHTML = "Felicidades, has acertado la palabra";
     
 }
@@ -129,7 +130,7 @@ function popupjuegoPerdido() {
     document.getElementById('juegoPerdido').style.display = "block";
     document.querySelector('.card-title').innerHTML = palabraActual;
     document.querySelector('.card-text').innerHTML = infoPalabra;
-    document.querySelector('.img-fluid').src = iamgenPalabra;
+    document.querySelector('.img-fluid').src = imagenPalabra;
 }
 
 function cerrarPopup() {
@@ -140,13 +141,16 @@ function cerrarPopup() {
 
 function volverAJugar() {
     location.reload();
-    borrarProgreso();
+    // borrarProgreso();
 }
 
 
 // localStorage
 function guardarProgreso() {
+    // const nombreUsuario = document.getElementById('nombreUsuario').value;
+    // console.log(nombreUsuario);
     const estadoJuego = {
+        // nombreUsuario: nombreUsuario,
         palabraActual: palabraActual,
         errores: errores,
         letrasAdivinadas: Array.from(document.querySelectorAll(".adivinada")).map(el => el.textContent),
@@ -156,7 +160,7 @@ function guardarProgreso() {
 
 function cargarProgreso() {
     const datosGuardados = localStorage.getItem('progresoJuego');
-    if (datosGuardados) {
+    if (datosGuardados == null) {
         const estadoJuego = JSON.parse(datosGuardados);
         palabraActual = estadoJuego.palabraActual;
         errores = estadoJuego.errores;
