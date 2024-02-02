@@ -1,6 +1,7 @@
 // cargarProgreso();
 // Arrays y variables
 let palabraActual, infoPalabra, imagenPalabra, errores = 0;
+let estadoJuego = {};
 const maxErrores = 6;
 const imgAhorcado = document.querySelector(".ahorcado img");
 const displayPalabra = document.querySelector(".palabra");
@@ -10,7 +11,7 @@ const verificacion = document.getElementsByClassName("letra adivinada");
 const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
 // teclado();
 const palabrasCategorias = [
-    { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg"},
+    { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg" },
     { palabra: "playa", categoria: "Transporte y Destinos", info: "Una extensión de arena y agua en la costa.", img: "img/playa.jpg" },
     { palabra: "monte", categoria: "Transporte y Destinos", info: "Una elevación de terreno más alta que una colina.", img: "img/monte.jpeg" },
     { palabra: "destino", categoria: "Transporte y Destinos", info: "El lugar al que alguien se dirige o viaja.", img: "img/destino" },
@@ -47,9 +48,17 @@ const btnInicio = document.getElementById('btnInicio');
 
 
 const initGame = (button, letraClicada) => {
+    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+    estadoJuego.letrasAdivinadas = [];
+    estadoJuego.letrasFalladas = [];
     if (palabraActual.includes(letraClicada)) {
+
+        if (!estadoJuego.letrasAdivinadas.includes(letraClicada)) {
+            estadoJuego.letrasAdivinadas.push(letraClicada);
+        }
         [...palabraActual].forEach((letra, index) => {
             if (letra === letraClicada) {
+
                 displayPalabra.querySelectorAll("li")[index].innerText = letra;
                 displayPalabra.querySelectorAll("li")[index].classList.add("adivinada");
                 button.style.backgroundColor = "green";
@@ -59,10 +68,17 @@ const initGame = (button, letraClicada) => {
         });
     }
     else {
+
         errores++;
+        // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
         imgAhorcado.src = `img/${errores}.png`;
         button.style.backgroundColor = "red";
+        if (!estadoJuego.letrasFalladas.includes(letraClicada)) {
+            estadoJuego.letrasFalladas.push(letraClicada);
+        }
     }
+
+    localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     button.disabled = true;
     console.log(letraClicada);
     textoErrores.innerText = `${errores} / ${maxErrores}`;
@@ -86,6 +102,7 @@ const initGame = (button, letraClicada) => {
 //         button.addEventListener("click",  ()=>initGame(button, element));
 //     }
 // }
+
 // Creo un botón por cada letra del abecedario
 for (let i = 97; i <= 122; i++) {
     const button = document.createElement("button");
@@ -113,6 +130,20 @@ function seleccionarPalabraRandom() {
 }
 
 function iniciarJuego() {
+    let nombreUsuario = document.getElementById('nombreUsuario').value;
+    if (nombreUsuario == '') {
+        // localStorage.setItem('nombreUsuario', 'Sin nombre');
+        estadoJuego = {
+            'nombreUsuario': 'Sin nombre',
+        }
+        localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
+    } else {
+        // localStorage.setItem('nombreUsuario', nombreUsuario);
+        estadoJuego = {
+            'nombreUsuario': nombreUsuario,
+        }
+        localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
+    }
     window.location.href = "juegoAhorcado.html";
     seleccionarPalabraRandom();
     letrasUsuario = [];
@@ -122,13 +153,13 @@ function iniciarJuego() {
 
 function verificarErrores() {
     if (errores == maxErrores) {
-        popup("HAS PERDIDO");
+        popup("Perdiste");
         console.log("Noob");
     }
 }
 function verificarSolucion() {
     if (verificacion.length == palabraActual.length) {
-        popup("HAS GANADO");
+        popup("Ganaste");
     }
 }
 
@@ -139,7 +170,7 @@ function popup(mensaje) {
     document.querySelector('.img-fluid').src = imagenPalabra;
     document.querySelector('.juego-ganado h2').textContent = mensaje;
     // document.getElementById('txtGanado').innerHTML = "Felicidades, has acertado la palabra";
-    
+
 }
 
 function cerrarPopup() {
@@ -149,7 +180,8 @@ function cerrarPopup() {
 
 
 function volverAJugar() {
-    location.reload();
+    window.location.href = "index.html";
+    localStorage.removeItem('estadoJuego');
     // borrarProgreso();
 }
 
@@ -181,7 +213,7 @@ function volverAJugar() {
 
 
 // function reconstruirEstadoJuego(estadoJuego) {
-//     displayPalabra.innerHTML = palabraActual.split("").map(letra => 
+//     displayPalabra.innerHTML = palabraActual.split("").map(letra =>
 //         `<li class="letra ${estadoJuego.letrasAdivinadas.includes(letra) ? 'adivinada' : ''}">${estadoJuego.letrasAdivinadas.includes(letra) ? letra : ''}</li>`).join("");
 
 //     imgAhorcado.src = `img/${errores}.png`;
