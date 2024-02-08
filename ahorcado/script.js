@@ -8,7 +8,11 @@ const displayPalabra = document.querySelector(".palabra");
 const textoErrores = document.querySelector(".errores b");
 const teclado = document.querySelector(".teclado");
 const verificacion = document.getElementsByClassName("letra adivinada");
+
+let letrasAdivinadas = estadoJuego.letrasAdivinadas = [];
+let letrasFalladas = estadoJuego.letrasFalladas = [];
 const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+recuperarEstadoJuego();
 // teclado();
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg" },
@@ -49,12 +53,10 @@ const btnInicio = document.getElementById('btnInicio');
 
 const initGame = (button, letraClicada) => {
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-    estadoJuego.letrasAdivinadas = [];
-    estadoJuego.letrasFalladas = [];
     if (palabraActual.includes(letraClicada)) {
 
-        if (!estadoJuego.letrasAdivinadas.includes(letraClicada)) {
-            estadoJuego.letrasAdivinadas.push(letraClicada);
+        if (!letrasAdivinadas.includes(letraClicada)) {
+            letrasAdivinadas.push(letraClicada);
         }
         [...palabraActual].forEach((letra, index) => {
             if (letra === letraClicada) {
@@ -70,14 +72,17 @@ const initGame = (button, letraClicada) => {
     else {
 
         errores++;
+        estadoJuego.errores = errores;
         // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
         imgAhorcado.src = `img/${errores}.png`;
         button.style.backgroundColor = "red";
-        if (!estadoJuego.letrasFalladas.includes(letraClicada)) {
-            estadoJuego.letrasFalladas.push(letraClicada);
+        if (!letrasFalladas.includes(letraClicada)) {
+            letrasFalladas.push(letraClicada);
         }
     }
-
+    estadoJuego.letrasAdivinadas = letrasAdivinadas;
+    estadoJuego.letrasFalladas = letrasFalladas;
+    
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     button.disabled = true;
     console.log(letraClicada);
@@ -148,6 +153,7 @@ function iniciarJuego() {
     seleccionarPalabraRandom();
     letrasUsuario = [];
     errores = 0;
+    recuperarEstadoJuego();
     // cargarProgreso();
 }
 
@@ -183,6 +189,16 @@ function volverAJugar() {
     window.location.href = "index.html";
     localStorage.removeItem('estadoJuego');
     // borrarProgreso();
+}
+
+function recuperarEstadoJuego(){
+    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+    if(estadoJuego == null){
+        iniciarJuego();
+        
+    }else{
+    textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
+    }
 }
 
 
