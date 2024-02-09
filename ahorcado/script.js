@@ -1,18 +1,19 @@
 // cargarProgreso();
 // Arrays y variables
-let palabraActual, infoPalabra, imagenPalabra, errores = 0;
-let estadoJuego = {};
-const maxErrores = 6;
-const imgAhorcado = document.querySelector(".ahorcado img");
-const displayPalabra = document.querySelector(".palabra");
-const textoErrores = document.querySelector(".errores b");
-const teclado = document.querySelector(".teclado");
-const verificacion = document.getElementsByClassName("letra adivinada");
+let palabraActual, infoPalabra, imagenPalabra, estadoJuego = {},
+    letrasAdivinadas = estadoJuego.letrasAdivinadas = [],
+    letrasFalladas = estadoJuego.letrasFalladas = [];
+errores = estadoJuego.errores = 0;
 
-let letrasAdivinadas = estadoJuego.letrasAdivinadas = [];
-let letrasFalladas = estadoJuego.letrasFalladas = [];
+const maxErrores = 6,
+    imgAhorcado = document.querySelector(".ahorcado img"),
+    displayPalabra = document.querySelector(".palabra"),
+    textoErrores = document.querySelector(".errores b"),
+    teclado = document.querySelector(".teclado"),
+    verificacion = document.getElementsByClassName("letra adivinada");
+
 const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
-recuperarEstadoJuego();
+
 // teclado();
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg" },
@@ -49,6 +50,10 @@ const palabrasCategorias = [
 
 const btnInicio = document.getElementById('btnInicio');
 
+estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+if (estadoJuego !== null) {
+    recuperarEstadoJuego();
+}
 
 
 const initGame = (button, letraClicada) => {
@@ -72,9 +77,9 @@ const initGame = (button, letraClicada) => {
     else {
 
         errores++;
-        estadoJuego.errores = errores;
+
         // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-        imgAhorcado.src = `img/${errores}.png`;
+
         button.style.backgroundColor = "red";
         if (!letrasFalladas.includes(letraClicada)) {
             letrasFalladas.push(letraClicada);
@@ -82,7 +87,8 @@ const initGame = (button, letraClicada) => {
     }
     estadoJuego.letrasAdivinadas = letrasAdivinadas;
     estadoJuego.letrasFalladas = letrasFalladas;
-    
+    estadoJuego.errores = errores;
+    imgAhorcado.src = `img/${errores}.png`;
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     button.disabled = true;
     console.log(letraClicada);
@@ -140,12 +146,14 @@ function iniciarJuego() {
         // localStorage.setItem('nombreUsuario', 'Sin nombre');
         estadoJuego = {
             'nombreUsuario': 'Sin nombre',
+            'errores': 0
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     } else {
         // localStorage.setItem('nombreUsuario', nombreUsuario);
         estadoJuego = {
             'nombreUsuario': nombreUsuario,
+            'errores': 0
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     }
@@ -191,14 +199,27 @@ function volverAJugar() {
     // borrarProgreso();
 }
 
-function recuperarEstadoJuego(){
-    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-    if(estadoJuego == null){
-        iniciarJuego();
-        
-    }else{
+function recuperarEstadoJuego() {
+    const botonesTeclado = teclado.querySelectorAll("button");
+    // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+    // if (estadoJuego == null) {
+    //     iniciarJuego();
+
+    // } else {
     textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
-    }
+    imgAhorcado.src = `img/${estadoJuego.errores}.png`;
+    setTimeout(() => {
+        
+        botonesTeclado.forEach(button => {
+            if (estadoJuego.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
+                button.disabled = true;
+                button.style.backgroundColor = "green";
+            }
+        });
+
+    }, 150);
+
+    // }
 }
 
 
