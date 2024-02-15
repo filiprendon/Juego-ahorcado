@@ -1,17 +1,21 @@
 // cargarProgreso();
 // Arrays y variables
-let palabraActual, infoPalabra, imagenPalabra, estadoJuego = {},
-    letrasAdivinadas = estadoJuego.letrasAdivinadas = [],
-    letrasFalladas = estadoJuego.letrasFalladas = [];
-errores = estadoJuego.errores = 0;
+let palabraActual, infoPalabra, imagenPalabra, estadoJuego = {};
+let letrasAdivinadas = estadoJuego.letrasAdivinadas = [];
+let letrasFalladas = estadoJuego.letrasFalladas = [];
+let palabraEnJuego = estadoJuego.palabraEnJuego;
+let errores = estadoJuego.errores = 0;
+
 
 const maxErrores = 6,
     imgAhorcado = document.querySelector(".ahorcado img"),
     displayPalabra = document.querySelector(".palabra"),
     textoErrores = document.querySelector(".errores b"),
     teclado = document.querySelector(".teclado"),
-    verificacion = document.getElementsByClassName("letra adivinada");
+    verificacion = document.getElementsByClassName("letra adivinada"),
+    paginaInicial = "index.html";
 
+    
 const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
 
 // teclado();
@@ -121,17 +125,23 @@ for (let i = 97; i <= 122; i++) {
     teclado.appendChild(button);
     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
 }
-seleccionarPalabraRandom();
+    seleccionarPalabraRandom();
+
+
 // guardarProgreso();
 
 // Funciones
 function seleccionarPalabraRandom() {
+    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     const { palabra, categoria, info, img } = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
     palabraActual = palabra;
     infoPalabra = info;
     imagenPalabra = img;
     document.querySelector(".categoria b").innerHTML = categoria;
     displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
+
+    estadoJuego.palabraEnJuego = palabraActual;
+    localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
 
     console.log(palabraActual);
     console.log(categoria);
@@ -194,13 +204,15 @@ function cerrarPopup() {
 
 
 function volverAJugar() {
-    window.location.href = "index.html";
+    window.location.href = paginaInicial;
     localStorage.removeItem('estadoJuego');
     // borrarProgreso();
 }
 
+
 function recuperarEstadoJuego() {
     const botonesTeclado = teclado.querySelectorAll("button");
+    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     // if (estadoJuego == null) {
     //     iniciarJuego();
@@ -208,16 +220,14 @@ function recuperarEstadoJuego() {
     // } else {
     textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
     imgAhorcado.src = `img/${estadoJuego.errores}.png`;
-    setTimeout(() => {
         
         botonesTeclado.forEach(button => {
-            if (estadoJuego.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
+            if (palabraSeparada.split("").includes(estadoJuego.letrasAdivinadas)) {
                 button.disabled = true;
                 button.style.backgroundColor = "green";
             }
         });
 
-    }, 150);
 
     // }
 }
