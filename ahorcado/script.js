@@ -15,8 +15,8 @@ const maxErrores = 6,
     verificacion = document.getElementsByClassName("letra adivinada"),
     paginaInicial = "index.html";
 
-    
-const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+
+// const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
 
 // teclado();
 const palabrasCategorias = [
@@ -92,6 +92,7 @@ const initGame = (button, letraClicada) => {
     estadoJuego.letrasAdivinadas = letrasAdivinadas;
     estadoJuego.letrasFalladas = letrasFalladas;
     estadoJuego.errores = errores;
+    estadoJuego.palabraEnJuego = palabraActual;
     imgAhorcado.src = `img/${errores}.png`;
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     button.disabled = true;
@@ -125,7 +126,13 @@ for (let i = 97; i <= 122; i++) {
     teclado.appendChild(button);
     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
 }
+if (estadoJuego.palabraEnJuego == '') {
     seleccionarPalabraRandom();
+} else {
+    palabraActual = estadoJuego.palabraEnJuego;
+    displayPalabra.innerHTML = palabraActual.split("").map(() => `<li class="letra"></li>`).join("");
+}
+
 
 
 // guardarProgreso();
@@ -138,9 +145,10 @@ function seleccionarPalabraRandom() {
     infoPalabra = info;
     imagenPalabra = img;
     document.querySelector(".categoria b").innerHTML = categoria;
-    displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
+    if (estadoJuego)
+        displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
 
-    estadoJuego.palabraEnJuego = palabraActual;
+
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
 
     console.log(palabraActual);
@@ -148,6 +156,7 @@ function seleccionarPalabraRandom() {
     console.log(infoPalabra);
     console.log(imagenPalabra);
     // guardarProgreso();
+
 }
 
 function iniciarJuego() {
@@ -156,19 +165,22 @@ function iniciarJuego() {
         // localStorage.setItem('nombreUsuario', 'Sin nombre');
         estadoJuego = {
             'nombreUsuario': 'Sin nombre',
-            'errores': 0
+            'errores': 0,
+            'palabraEnJuego': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     } else {
         // localStorage.setItem('nombreUsuario', nombreUsuario);
         estadoJuego = {
             'nombreUsuario': nombreUsuario,
-            'errores': 0
+            'errores': 0,
+            'palabraEnJuego': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     }
+
     window.location.href = "juegoAhorcado.html";
-    seleccionarPalabraRandom();
+    // seleccionarPalabraRandom();
     letrasUsuario = [];
     errores = 0;
     recuperarEstadoJuego();
@@ -214,22 +226,22 @@ function recuperarEstadoJuego() {
     const botonesTeclado = teclado.querySelectorAll("button");
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-    // if (estadoJuego == null) {
-    //     iniciarJuego();
+    if (estadoJuego == null) {
+        iniciarJuego();
 
-    // } else {
-    textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
-    imgAhorcado.src = `img/${estadoJuego.errores}.png`;
-        
+    } else {
+        textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
+        imgAhorcado.src = `img/${estadoJuego.errores}.png`;
+
         botonesTeclado.forEach(button => {
-            if (palabraSeparada.split("").includes(estadoJuego.letrasAdivinadas)) {
+            if (estadoJuego.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
                 button.disabled = true;
-                button.style.backgroundColor = "green";
+                button.style.backgroundColor = palabraActual.includes(button.textContent) ? "green" : "red";
             }
         });
 
 
-    // }
+    }
 }
 
 
