@@ -4,6 +4,8 @@ let palabraActual, infoPalabra, imagenPalabra, estadoJuego = {};
 let letrasAdivinadas = estadoJuego.letrasAdivinadas = [];
 let letrasFalladas = estadoJuego.letrasFalladas = [];
 let palabraEnJuego = estadoJuego.palabraEnJuego;
+let imgPalabra = estadoJuego.imgPalabra;
+let descPalabra = estadoJuego.descPalabra;
 let errores = estadoJuego.errores = 0;
 
 
@@ -130,6 +132,10 @@ if (estadoJuego.palabraEnJuego == '') {
     seleccionarPalabraRandom();
 } else {
     palabraActual = estadoJuego.palabraEnJuego;
+    letrasAdivinadas = estadoJuego.letrasAdivinadas;
+    letrasFalladas = estadoJuego.letrasFalladas;
+    errores = estadoJuego.errores;
+    // imagenPalabra = estadoJuego.imgPalabra;
     displayPalabra.innerHTML = palabraActual.split("").map(() => `<li class="letra"></li>`).join("");
 }
 
@@ -144,6 +150,7 @@ function seleccionarPalabraRandom() {
     palabraActual = palabra;
     infoPalabra = info;
     imagenPalabra = img;
+    imagenPalabra = estadoJuego.imgPalabra;
     document.querySelector(".categoria b").innerHTML = categoria;
     if (estadoJuego)
         displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
@@ -166,7 +173,8 @@ function iniciarJuego() {
         estadoJuego = {
             'nombreUsuario': 'Sin nombre',
             'errores': 0,
-            'palabraEnJuego': ''
+            'palabraEnJuego': '',
+            'imgPalabra': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     } else {
@@ -174,7 +182,8 @@ function iniciarJuego() {
         estadoJuego = {
             'nombreUsuario': nombreUsuario,
             'errores': 0,
-            'palabraEnJuego': ''
+            'palabraEnJuego': '',
+            'imgPalabra': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     }
@@ -190,7 +199,6 @@ function iniciarJuego() {
 function verificarErrores() {
     if (errores == maxErrores) {
         popup("Perdiste");
-        console.log("Noob");
     }
 }
 function verificarSolucion() {
@@ -223,7 +231,8 @@ function volverAJugar() {
 
 
 function recuperarEstadoJuego() {
-    const botonesTeclado = teclado.querySelectorAll("button");
+    setTimeout(() => {
+        const botonesTeclado = document.querySelectorAll('button');
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     if (estadoJuego == null) {
@@ -234,14 +243,20 @@ function recuperarEstadoJuego() {
         imgAhorcado.src = `img/${estadoJuego.errores}.png`;
 
         botonesTeclado.forEach(button => {
-            if (estadoJuego.letrasAdivinadas.includes(button.textContent) || palabraActual.includes(button.textContent) === false) {
+            if (estadoJuego.letrasAdivinadas.includes(button.textContent)) {
                 button.disabled = true;
-                button.style.backgroundColor = palabraActual.includes(button.textContent) ? "green" : "red";
+                button.style.backgroundColor = "green";
+            }
+            if(estadoJuego.letrasFalladas.includes(button.textContent)) {
+                button.disabled = true;
+                button.style.backgroundColor = "red";
             }
         });
 
 
     }
+    }, 1);
+    
 }
 
 
