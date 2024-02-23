@@ -1,10 +1,11 @@
 // cargarProgreso();
 // Arrays y variables
-let palabraActual, infoPalabra, imagenPalabra, estadoJuego = {};
+let palabraActual, infoPalabra, categoriaPalabra, imagenPalabra, estadoJuego = {};
 let letrasAdivinadas = estadoJuego.letrasAdivinadas = [];
 let letrasFalladas = estadoJuego.letrasFalladas = [];
 let palabraEnJuego = estadoJuego.palabraEnJuego;
 let imgPalabra = estadoJuego.imgPalabra;
+let catPalabra = estadoJuego.catPalabra;
 let descPalabra = estadoJuego.descPalabra;
 let errores = estadoJuego.errores = 0;
 
@@ -13,6 +14,7 @@ const maxErrores = 6,
     imgAhorcado = document.querySelector(".ahorcado img"),
     displayPalabra = document.querySelector(".palabra"),
     textoErrores = document.querySelector(".errores b"),
+    textoCategoria = document.querySelector(".categoria b"),
     teclado = document.querySelector(".teclado"),
     verificacion = document.getElementsByClassName("letra adivinada"),
     paginaInicial = "index.html";
@@ -95,6 +97,10 @@ const initGame = (button, letraClicada) => {
     estadoJuego.letrasFalladas = letrasFalladas;
     estadoJuego.errores = errores;
     estadoJuego.palabraEnJuego = palabraActual;
+    estadoJuego.imgPalabra = imagenPalabra;
+    estadoJuego.descPalabra = infoPalabra;
+    estadoJuego.catPalabra = categoriaPalabra;
+
     imgAhorcado.src = `img/${errores}.png`;
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     button.disabled = true;
@@ -132,10 +138,12 @@ if (estadoJuego.palabraEnJuego == '') {
     seleccionarPalabraRandom();
 } else {
     palabraActual = estadoJuego.palabraEnJuego;
+    imagenPalabra = estadoJuego.imgPalabra;
     letrasAdivinadas = estadoJuego.letrasAdivinadas;
     letrasFalladas = estadoJuego.letrasFalladas;
     errores = estadoJuego.errores;
-    // imagenPalabra = estadoJuego.imgPalabra;
+    categoriaPalabra = estadoJuego.catPalabra;
+    infoPalabra = estadoJuego.descPalabra;
     displayPalabra.innerHTML = palabraActual.split("").map(() => `<li class="letra"></li>`).join("");
 }
 
@@ -148,10 +156,12 @@ function seleccionarPalabraRandom() {
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     const { palabra, categoria, info, img } = palabrasCategorias[Math.floor(Math.random() * palabrasCategorias.length)];
     palabraActual = palabra;
+    categoriaPalabra = categoria;
     infoPalabra = info;
     imagenPalabra = img;
-    imagenPalabra = estadoJuego.imgPalabra;
-    document.querySelector(".categoria b").innerHTML = categoria;
+    // imagenPalabra = estadoJuego.imgPalabra;
+    estadoJuego.catPalabra = categoriaPalabra;
+    textoCategoria.innerHTML = categoriaPalabra;
     if (estadoJuego)
         displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
 
@@ -159,7 +169,7 @@ function seleccionarPalabraRandom() {
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
 
     console.log(palabraActual);
-    console.log(categoria);
+    console.log(categoriaPalabra);
     console.log(infoPalabra);
     console.log(imagenPalabra);
     // guardarProgreso();
@@ -173,8 +183,8 @@ function iniciarJuego() {
         estadoJuego = {
             'nombreUsuario': 'Sin nombre',
             'errores': 0,
-            'palabraEnJuego': '',
-            'imgPalabra': ''
+            'palabraEnJuego': ''
+            // 'imgPalabra': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     } else {
@@ -182,8 +192,8 @@ function iniciarJuego() {
         estadoJuego = {
             'nombreUsuario': nombreUsuario,
             'errores': 0,
-            'palabraEnJuego': '',
-            'imgPalabra': ''
+            'palabraEnJuego': ''
+            // 'imgPalabra': ''
         }
         localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
     }
@@ -241,6 +251,9 @@ function recuperarEstadoJuego() {
     } else {
         textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
         imgAhorcado.src = `img/${estadoJuego.errores}.png`;
+        textoCategoria.innerText = estadoJuego.catPalabra;
+        displayPalabra.innerHTML = palabraActual.split("").map(letra =>
+                     `<li class="letra ${estadoJuego.letrasAdivinadas.includes(letra) ? 'adivinada' : ''}">${estadoJuego.letrasAdivinadas.includes(letra) ? letra : ''}</li>`).join("");
 
         botonesTeclado.forEach(button => {
             if (estadoJuego.letrasAdivinadas.includes(button.textContent)) {
