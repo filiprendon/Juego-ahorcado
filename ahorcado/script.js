@@ -20,9 +20,10 @@ const maxErrores = 6,
     paginaInicial = "index.html";
 
 
-// const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+const letrasTeclado = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
 
-// teclado();
+tecladoJuego();
+
 const palabrasCategorias = [
     { palabra: "avioneta", categoria: "Transporte y Destinos", info: "Una pequeña aeronave utilizada para vuelos cortos.", img: "img/avioneta.jpg" },
     { palabra: "playa", categoria: "Transporte y Destinos", info: "Una extensión de arena y agua en la costa.", img: "img/playa.jpg" },
@@ -113,27 +114,30 @@ const initGame = (button, letraClicada) => {
     // guardarProgreso();
 }
 
-// function teclado(){
+function tecladoJuego(){
 
-//     for (let i = 0; i < letrasTeclado.length; i++) {
-//         const element = letrasTeclado[i];
-//         console.log(element);
-//         const button = document.createElement('button');
-//         document.querySelector('.teclado').appendChild(button);
-//         button.style.width = "25px";
-//         button.style.height= "25px";
-//         button.textContent = element;
-//         button.addEventListener("click",  ()=>initGame(button, element));
-//     }
-// }
+    for (let i = 0; i < letrasTeclado.length; i++) {
+        const element = letrasTeclado[i];
+        // console.log(element);
+        const button = document.createElement('button');
+        document.querySelector('.teclado').appendChild(button);
+        button.style.width = "45px";
+        button.style.height= "45px";
+        button.textContent = element;
+        button.style.display = "flex";
+        button.style.justifyContent = "center";
+        button.style.alignItems = "center";
+        button.addEventListener("click",  ()=>initGame(button, element.toLowerCase()));
+    }
+}
 
 // Creo un botón por cada letra del abecedario
-for (let i = 97; i <= 122; i++) {
-    const button = document.createElement("button");
-    button.innerText = String.fromCharCode(i);
-    teclado.appendChild(button);
-    button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
-}
+// for (let i = 97; i <= 122; i++) {
+//     const button = document.createElement("button");
+//     button.innerText = String.fromCharCode(i);
+//     teclado.appendChild(button);
+//     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
+// }
 if (estadoJuego.palabraEnJuego == '') {
     seleccionarPalabraRandom();
 } else {
