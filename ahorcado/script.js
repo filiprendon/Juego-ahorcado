@@ -114,7 +114,7 @@ const initGame = (button, letraClicada) => {
     // guardarProgreso();
 }
 
-function tecladoJuego(){
+function tecladoJuego() {
 
     for (let i = 0; i < letrasTeclado.length; i++) {
         const element = letrasTeclado[i];
@@ -122,12 +122,12 @@ function tecladoJuego(){
         const button = document.createElement('button');
         document.querySelector('.teclado').appendChild(button);
         button.style.width = "45px";
-        button.style.height= "45px";
+        button.style.height = "45px";
         button.textContent = element;
         button.style.display = "flex";
         button.style.justifyContent = "center";
         button.style.alignItems = "center";
-        button.addEventListener("click",  ()=>initGame(button, element.toLowerCase()));
+        button.addEventListener("click", () => initGame(button, element.toLowerCase()));
     }
 }
 
@@ -148,7 +148,7 @@ if (estadoJuego.palabraEnJuego == '') {
     errores = estadoJuego.errores;
     categoriaPalabra = estadoJuego.catPalabra;
     infoPalabra = estadoJuego.descPalabra;
-    displayPalabra.innerHTML = palabraActual.split("").map(() => `<li class="letra"></li>`).join("");
+    displayPalabra.innerHTML = generarListaLetras(palabra, letrasAdivinadas);
 }
 
 
@@ -167,7 +167,7 @@ function seleccionarPalabraRandom() {
     estadoJuego.catPalabra = categoriaPalabra;
     textoCategoria.innerHTML = categoriaPalabra;
     if (estadoJuego)
-        displayPalabra.innerHTML = palabra.split("").map(() => `<li class="letra"></li>`).join("");
+        displayPalabra.innerHTML = generarListaLetras(palabra, letrasAdivinadas);
 
 
     localStorage.setItem('estadoJuego', JSON.stringify(estadoJuego));
@@ -179,6 +179,17 @@ function seleccionarPalabraRandom() {
     // guardarProgreso();
 
 }
+
+function generarListaLetras(palabra, letrasAdivinadas) {
+    let listaHTML = '';
+    for (let letra of palabra) {
+        let claseAdivinada = letrasAdivinadas.includes(letra) ? 'adivinada' : '';
+        let contenido = letrasAdivinadas.includes(letra) ? letra : '';
+        listaHTML += `<li class="letra ${claseAdivinada}">${contenido}</li>`;
+    }
+    return listaHTML;
+}
+
 
 function iniciarJuego() {
     let nombreUsuario = document.getElementById('nombreUsuario').value;
@@ -247,35 +258,33 @@ function volverAJugar() {
 function recuperarEstadoJuego() {
     setTimeout(() => {
         const botonesTeclado = document.querySelectorAll('button');
-    let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-    // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
-    if (estadoJuego == null) {
-        iniciarJuego();
+        let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+        // let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
+        if (estadoJuego == null) {
+            iniciarJuego();
 
-    } else {
-        textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
-        imgAhorcado.src = `img/${estadoJuego.errores}.png`;
-        textoCategoria.innerText = estadoJuego.catPalabra;
-        displayPalabra.innerHTML = palabraActual.split("").map(letra =>
-                     `<li class="letra ${estadoJuego.letrasAdivinadas.includes(letra) ? 'adivinada' : ''}">${estadoJuego.letrasAdivinadas.includes(letra) ? letra : ''}</li>`).join("");
+        } else {
+            textoErrores.innerText = `${estadoJuego.errores} / ${maxErrores}`;
+            imgAhorcado.src = `img/${estadoJuego.errores}.png`;
+            textoCategoria.innerText = estadoJuego.catPalabra;
+            displayPalabra.innerHTML = generarListaLetras(palabraActual, estadoJuego.letrasAdivinadas);
 
-        botonesTeclado.forEach(button => {
-            if (estadoJuego.letrasAdivinadas.includes(button.textContent)) {
-                button.disabled = true;
-                button.style.backgroundColor = "green";
-            }
-            if(estadoJuego.letrasFalladas.includes(button.textContent)) {
-                button.disabled = true;
-                button.style.backgroundColor = "red";
-            }
-        });
+            botonesTeclado.forEach(button => {
+                if (estadoJuego.letrasAdivinadas.includes(button.textContent)) {
+                    button.disabled = true;
+                    button.style.backgroundColor = "green";
+                }
+                if (estadoJuego.letrasFalladas.includes(button.textContent)) {
+                    button.disabled = true;
+                    button.style.backgroundColor = "red";
+                }
+            });
 
 
-    }
+        }
     }, 1);
-    
-}
 
+}
 
 // localStorage
 // function guardarProgreso() {
