@@ -65,7 +65,7 @@ if (estadoJuego !== null) {
 }
 
 
-const initGame = (button, letraClicada) => {
+const juego = (button, letraClicada) => {
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     if (palabraActual.includes(letraClicada)) {
 
@@ -111,7 +111,6 @@ const initGame = (button, letraClicada) => {
     // console.log(palabraActual.length);
     // console.log(verificacion.length);
     verificarErrores();
-    // guardarProgreso();
 }
 
 function tecladoJuego() {
@@ -127,17 +126,10 @@ function tecladoJuego() {
         button.style.display = "flex";
         button.style.justifyContent = "center";
         button.style.alignItems = "center";
-        button.addEventListener("click", () => initGame(button, element.toLowerCase()));
+        button.addEventListener("click", () => juego(button, element.toLowerCase()));
     }
 }
 
-// Creo un botón por cada letra del abecedario
-// for (let i = 97; i <= 122; i++) {
-//     const button = document.createElement("button");
-//     button.innerText = String.fromCharCode(i);
-//     teclado.appendChild(button);
-//     button.addEventListener("click", e => initGame(e.target, String.fromCharCode(i)));
-// }
 if (estadoJuego.palabraEnJuego == '') {
     seleccionarPalabraRandom();
 } else {
@@ -152,8 +144,6 @@ if (estadoJuego.palabraEnJuego == '') {
 }
 
 
-
-// guardarProgreso();
 
 // Funciones
 function seleccionarPalabraRandom() {
@@ -176,19 +166,18 @@ function seleccionarPalabraRandom() {
     console.log(categoriaPalabra);
     console.log(infoPalabra);
     console.log(imagenPalabra);
-    // guardarProgreso();
 
 }
 
 function generarListaLetras(palabra, letrasAdivinadas) {
     let listaHTML = '';
     for (let letra of palabra) {
-        let claseAdivinada = letrasAdivinadas.includes(letra) ? 'adivinada' : '';
-        let contenido = letrasAdivinadas.includes(letra) ? letra : '';
-        listaHTML += `<li class="letra ${claseAdivinada}">${contenido}</li>`;
+        let contenido = letrasAdivinadas.includes(letra) ? letra : '_';
+        listaHTML += `<li class="letra">${contenido}</li>`;
     }
     return listaHTML;
 }
+
 
 
 function iniciarJuego() {
@@ -270,11 +259,11 @@ function recuperarEstadoJuego() {
             displayPalabra.innerHTML = generarListaLetras(palabraActual, estadoJuego.letrasAdivinadas);
 
             botonesTeclado.forEach(button => {
-                if (estadoJuego.letrasAdivinadas.includes(button.textContent)) {
+                if (estadoJuego.letrasAdivinadas.includes(button.textContent.toLocaleLowerCase())) {
                     button.disabled = true;
                     button.style.backgroundColor = "green";
                 }
-                if (estadoJuego.letrasFalladas.includes(button.textContent)) {
+                if (estadoJuego.letrasFalladas.includes(button.textContent.toLocaleLowerCase())) {
                     button.disabled = true;
                     button.style.backgroundColor = "red";
                 }
