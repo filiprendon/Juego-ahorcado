@@ -68,21 +68,21 @@ if (estadoJuego !== null) {
 const juego = (button, letraClicada) => {
     let estadoJuego = JSON.parse(localStorage.getItem('estadoJuego'));
     if (palabraActual.includes(letraClicada)) {
-
         if (!letrasAdivinadas.includes(letraClicada)) {
             letrasAdivinadas.push(letraClicada);
         }
-        [...palabraActual].forEach((letra, index) => {
+        const letrasPalabra = [...palabraActual];
+        const letrasDisplay = displayPalabra.querySelectorAll("li");
+        for (let index = 0; index < letrasPalabra.length; index++) {
+            const letra = letrasPalabra[index];
             if (letra === letraClicada) {
-
-                displayPalabra.querySelectorAll("li")[index].innerText = letra;
-                displayPalabra.querySelectorAll("li")[index].classList.add("adivinada");
+                letrasDisplay[index].innerText = letra;
+                letrasDisplay[index].classList.add("adivinada");
                 button.style.backgroundColor = "green";
-
             }
-
-        });
+        }
     }
+
     else {
 
         errores++;
